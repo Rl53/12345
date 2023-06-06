@@ -33,6 +33,8 @@ public class Orc extends Monster{
         }if (extra == 3){
             System.out.println("Orc " + (b+1)+ " moves aggressively.");
         }
+        System.out.println("Orc " + (b+1) + " does " + getDamage() + " damage.");
+
         return getDamage();
     }
 

@@ -41,7 +41,7 @@ public class Lair{
 
 
   
-  public void combatTurn(Dragon[] dragons, int i){
+  public void combatTurn(Monster[] monsters, int i){
 //    //Generate Breath Dialogue
 //    for (int b = 0; b < dragons.length; b++){
 //      if(dragons[b].isBreath()== true){

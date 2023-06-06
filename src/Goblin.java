@@ -34,6 +34,8 @@ public class Goblin extends Monster{
         }if (extra == 3){
             System.out.println("Goblin " + (b+1)+ " approaches closer.");
         }
+        System.out.println("Goblin " + (b+1) + " does " + getDamage() + " damage.");
+
         return getDamage();
     }
 

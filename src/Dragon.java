@@ -40,6 +40,7 @@ public class Dragon extends Monster{
     }if (extra == 3){
       System.out.println("Dragon " + (b+1)+ " bites down on you.");
     }
+    System.out.println("Dragon " + (b+1) + " does " + getDamage() + " damage.");
     return getDamage();
   }
 

@@ -129,7 +129,7 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
 
     }
     public void game() {
-        write("You descend into a massive, scorched cavern, and encounter your first dragon. Press any button to begin");
+        write("You descend into a massive, scorched cavern, and encounter your first enemy. Press any button to begin");
 
     }
 
@@ -236,7 +236,7 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
 //        }
             if (turns > 0) {
                 if (selecting) {
-                    write("Please choose the dragon to attack.");
+                    write("Please choose a mob to attack.");
                     if (button1.contains(e.getPoint())) {
                         write(rooms[currentRoom].getMonsters()[0].takeDamage(player.getSword().dealDamage(rooms[currentRoom].getMonsters()[0].getElement())));
                         selecting = false;
@@ -258,7 +258,7 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
                     }
                     //check for upgradin time
                     if (rooms[currentRoom].monsterDead()) {
-                        write("You have slain all the dragons in the room and move to and find one of three rewards:");
+                        write("You have slain all the enemies in the room and move to and find one of three rewards:");
                         upgrading = true;
                         rolled = true;
 
@@ -301,7 +301,7 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
                     if (button1.contains(e.getPoint())) {
                         action = 1;
                         selecting = true;
-                        write("Please choose the dragon to attack.");
+                        write("Please choose a mob to attack.");
 
 
                     }
@@ -328,7 +328,7 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
                 }
 
             } else {
-                dragonsMove();
+                monsterMove();
             }
             INAMINUTE();
         }
@@ -347,15 +347,17 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
 
 
 
-    public void dragonsMove() {
+    public void monsterMove() {
+        String allactions = "";
         if (rooms[currentRoom].monsterDead() == false) {
 
             for (int b = 0; b < rooms[currentRoom].getMonsters().length; b++) {
-                if (rooms[currentRoom].getMonsters()[b].isDead() == false) {
+                if (!rooms[currentRoom].getMonsters()[b].isDead()) {
                     write(player.takeDamage(rooms[currentRoom].getMonsters()[b].attack(b)));
                 }
 
             }
+            write(allactions);
         }
         player.getArmor().evadeToggle(false);
         player.getArmor().resetDefense();
