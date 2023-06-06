@@ -21,10 +21,12 @@ public class Goblin extends Monster{
 
     @ Override
     public int attack(int b){
-        if (potions > 0){
-            potions--;
-            changeHP(getHp() + 10);
-            System.out.println("Goblin " + (b+1) +" uses a potion, and heals 10 HP. This goblin has " + potions + " potions left.");
+        if (getHp() + 10 <= getMaxHp()) {
+            if (potions > 0) {
+                potions--;
+                changeHP(getHp() + 10);
+                System.out.println("Goblin " + (b + 1) + " uses a potion, and heals 10 HP. This goblin has " + potions + " potions left.");
+            }
         }
         int extra = (int)(Math.random() * 3)+1;
         if (extra == 1){

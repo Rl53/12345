@@ -44,6 +44,10 @@ public class Monster {
         return hp;
     }
 
+    public int getMaxHp() {
+        return maxHp;
+    }
+
     public void changeHP(int newHp) {
         hp = newHp;
     }

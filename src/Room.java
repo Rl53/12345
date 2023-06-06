@@ -6,7 +6,7 @@ public class Room{
     // species will randomize and change after adding more classes
 
     if (counter < 4){
-      Dragon m1 = new Dragon("",40,40,10,400,400,"dragon", false);
+      Goblin m1 = new Goblin("",40,40,10,400,400,"goblin");
       Monster[] m = {m1};
       monsters = m;
     } else if (counter < 7) {
