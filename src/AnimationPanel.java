@@ -7,6 +7,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import static java.awt.Font.BOLD;
 
 // a subclass of JPanel; this panel has been designed entirely in code (not using the UI designer)
@@ -151,10 +153,16 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
         super.paint(gp); // must do this!
         Graphics2D g2d = (Graphics2D) gp; // cast gp to a 2D graphics object so we can do more advanced stuff
 
+//        ImageIcon background = new ImageIcon("src/.png");
+//        Image bgI = background.getImage();
+//        g2d.drawImage(bgI, 0, 0, this);
+
         // draw blue message on screen
         g2d.setColor(Color.blue);
         Font myFont = new Font("Arial", BOLD, 14);
         g2d.setFont(myFont);
+
+
 //         message = "Move orange square to gray! Dodge the red enemy!";
 //        if (won) {
 //            message = "YOU WIN!!!!";
@@ -188,13 +196,32 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
         g2d.drawString(defense, 1050, 50);
         g2d.drawString(dodge, 1050, 75);
         g2d.setColor(Color.RED);
-//        bu.paintIcon(button,g2d,500,500);
-        if (upgrading == false) {
+
+        ImageIcon person = new ImageIcon("src/basic (2).png");
+        Image personImage = person.getImage();
+        g2d.drawImage(personImage, 525, 480, this);
+
+        if (upgrading) {
+            ImageIcon ii = new ImageIcon("src/fire.png");
+            Image image = ii.getImage();
+            g2d.drawImage(image, 525, 480, this);
+        }
+
+        if (!upgrading) {
             int increment = 0;
             for (int i = 0; i < rooms[currentRoom].getMonsters().length; i++) {
-                g2d.draw(rooms[currentRoom].getMonsters()[i].getBody());
+               // adds enemy picture
+                if (rooms[currentRoom].getMonsters()[i] instanceof Goblin) {
+                    ImageIcon ii = new ImageIcon("src/slime2-removebg-preview (1).png");
+                    Image image = ii.getImage();
+                    g2d.drawImage(image, 150 + i * 250, 305, this);
+                }
+
             }
         }
+
+
+
 
 
     }

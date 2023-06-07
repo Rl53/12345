@@ -8,6 +8,7 @@ public class Room{
     if (counter < 4){
       Goblin m1 = new Goblin("",40,40,10,400,400,"goblin");
       Monster[] m = {m1};
+
       monsters = m;
     } else if (counter < 7) {
       Orc m1 = new Orc("",40,40,10,400,400,"orc");
