@@ -9,6 +9,8 @@ import javax.swing.*;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
+
 import static java.awt.Font.BOLD;
 
 // a subclass of JPanel; this panel has been designed entirely in code (not using the UI designer)
@@ -64,6 +66,8 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
     private boolean messageLoaded;
 
     private String loadedMessage;
+
+
 
 
 
@@ -177,11 +181,13 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, 1200, 100);
         g2d.fillRect(0, 750, 1200, 150);// draw the top border
+
         g2d.setColor(Color.darkGray);
         g2d.fillRect(225,775,200,75);
         g2d.fillRect(475,775,200,75);
         g2d.fillRect(725,775,200,75);
-
+        ImageIcon what = new ImageIcon("src/dungeon1.png");
+        g2d.drawImage(what.getImage(), 0, 100,this);
         g2d.draw(button1);
         g2d.draw(button2);
         g2d.draw(button3);
@@ -196,25 +202,24 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
         g2d.drawString(defense, 1050, 50);
         g2d.drawString(dodge, 1050, 75);
         g2d.setColor(Color.RED);
-
-        ImageIcon person = new ImageIcon("src/basic (2).png");
-        Image personImage = person.getImage();
-        g2d.drawImage(personImage, 525, 480, this);
-
-        if (upgrading) {
-            ImageIcon ii = new ImageIcon("src/fire.png");
-            Image image = ii.getImage();
-            g2d.drawImage(image, 525, 480, this);
+//        for (int i = 0; i <player.getImages().size();i++){
+//            if (i ==0){
+//                g2d.drawImage(player.getImages().get(i).getImage(), 527, 478, this);
+//            } else {
+//                g2d.drawImage(player.getImages().get(i).getImage(), 525, 480, this);
+//            }
+//        }
+        for (ImageIcon things : player.getImages())
+        {
+            g2d.drawImage(things.getImage(), 200, 400, this);
         }
 
         if (!upgrading) {
             int increment = 0;
             for (int i = 0; i < rooms[currentRoom].getMonsters().length; i++) {
                // adds enemy picture
-                if (rooms[currentRoom].getMonsters()[i] instanceof Goblin) {
-                    ImageIcon ii = new ImageIcon("src/slime2-removebg-preview (1).png");
-                    Image image = ii.getImage();
-                    g2d.drawImage(image, 150 + i * 250, 305, this);
+                if (rooms[currentRoom].getMonsters()[i].isDead()==false) {
+                    g2d.drawImage(rooms[currentRoom].getMonsters()[i].getImage().getImage(), 800 + i * 75,500+ i * 75 , this);
                 }
 
             }
@@ -254,6 +259,7 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
     // called when the mouse button is pressed in
     @Override
     public void mousePressed(MouseEvent e) {
+      int rand = 1; //(int) (Math.random()*2);
         if (canMove) {
 
 //        try {
@@ -261,25 +267,25 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
 //        } catch (InterruptedException ex) {
 //            throw new RuntimeException(ex);
 //        }
-            if (turns > 0) {
+
                 if (selecting) {
                     write("Please choose a mob to attack.");
                     if (button1.contains(e.getPoint())) {
-                        write(rooms[currentRoom].getMonsters()[0].takeDamage(player.getSword().dealDamage(rooms[currentRoom].getMonsters()[0].getElement())));
+                        write(rooms[currentRoom].getMonsters()[0].takeDamage(player.getSword().dealDamage(rooms[currentRoom].getMonsters()[0].getResists())));
                         selecting = false;
 
 
                     }
                     //defend
                     if (button2.contains(e.getPoint()) && (rooms[currentRoom].getMonsters().length > 1)) {
-                        write(rooms[currentRoom].getMonsters()[1].takeDamage(player.getSword().dealDamage(rooms[currentRoom].getMonsters()[1].getElement())));
+                        write(rooms[currentRoom].getMonsters()[1].takeDamage(player.getSword().dealDamage(rooms[currentRoom].getMonsters()[1].getResists())));
                         selecting = false;
 
 
                     }
                     //evade
                     if (button3.contains(e.getPoint()) && (rooms[currentRoom].getMonsters().length > 2)) {
-                        write(rooms[currentRoom].getMonsters()[2].takeDamage(player.getSword().dealDamage(rooms[currentRoom].getMonsters()[2].getElement())));
+                        write(rooms[currentRoom].getMonsters()[2].takeDamage(player.getSword().dealDamage(rooms[currentRoom].getMonsters()[2].getResists())));
                         selecting = false;
 
                     }
@@ -289,37 +295,49 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
                         upgrading = true;
                         rolled = true;
 
+                    } else {
+                        loadedMessage = "Choose to attack (1), defend (2), or start evading (3).";
+                        messageLoaded = true;
                     }
-                    loadedMessage = "Choose to attack, defend, or start evading.";
-                    messageLoaded = true;
+//                    loadedMessage = "Choose to attack, defend, or start evading.";
+//                    messageLoaded = true;
                     INAMINUTE();
                     turns--;
+                    if (rand == 1) {
+                        monsterMove();
+
+                    }
+                    INAMINUTE();
                 } else if (upgrading) {
 
                     if (rolled) {
                         write(upgrades.rewards());
+                        rolled = false;
                     }
 
                     if (button1.contains(e.getPoint())) {
                         write(upgrades.doItem(upgrades.getOptions()[0]));
                         upgrading = false;
                         currentRoom++;
-
+                        player.addImage(upgrades.getSprite());
+                        turns = 3;
                     }
                     //defend
                     if (button2.contains(e.getPoint())) {
                         write(upgrades.doItem(upgrades.getOptions()[1]));
                         upgrading = false;
                         currentRoom++;
+                        player.addImage(upgrades.getSprite());
+                        turns = 3;
                     }
                     //evade
                     if (button3.contains(e.getPoint())) {
                         write(upgrades.doItem(upgrades.getOptions()[2]));
                         upgrading = false;
                         currentRoom++;
-
+                        player.addImage(upgrades.getSprite());
+                        turns = 3;
                     }
-                    rolled = false;
 
 
                 } else {
@@ -330,16 +348,16 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
                         selecting = true;
                         write("Please choose a mob to attack.");
 
-
                     }
                     //defend
                     if (button2.contains(e.getPoint())) {
                         player.getArmor().reinforce();
                         write("You reinforce your armor.");
                         turns--;
-                        INAMINUTE();
                         loadedMessage = "Choose to attack, defend, or start evading.";
                         messageLoaded = true;
+                        INAMINUTE();
+
 
                     }
                     //evade
@@ -347,19 +365,21 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
                         player.getArmor().evadeToggle(true);
                         write("You prepare to dodge attacks.");
                         turns--;
-                        INAMINUTE();
+
                         loadedMessage = "Choose to attack, defend, or start evading.";
                         messageLoaded = true;
+                        INAMINUTE();
 
                     }
                 }
 
-            } else {
-                monsterMove();
+
             }
+
+
             INAMINUTE();
         }
-    }
+
 
     public void INAMINUTE(){
         if (canMove == true) {
@@ -375,20 +395,21 @@ public class AnimationPanel extends JPanel implements ActionListener, MouseListe
 
 
     public void monsterMove() {
-        String allactions = "";
         if (rooms[currentRoom].monsterDead() == false) {
 
             for (int b = 0; b < rooms[currentRoom].getMonsters().length; b++) {
+
                 if (!rooms[currentRoom].getMonsters()[b].isDead()) {
-                    write(player.takeDamage(rooms[currentRoom].getMonsters()[b].attack(b)));
+                    write("The player takes " + player.dmgTaken(rooms[currentRoom].getMonsters()[b].attack(b)) + " damage.");
+                    if (player.getHp() <= 0) {
+                        write("You lost all your health. GAME OVER");
+                    }
                 }
 
             }
-            write(allactions);
         }
         player.getArmor().evadeToggle(false);
         player.getArmor().resetDefense();
-        turns = 3;
     }
 
     // called when the mouse button is released

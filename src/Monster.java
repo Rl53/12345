@@ -6,39 +6,28 @@ public class Monster {
     private int maxHp;
     private int hp;
     private int damage;
-    private String element;
+    private double[] resistences;
+
+    private ImageIcon one;
 
     private Rectangle rect;
     private int rectWidth;
     private int rectLength;
     private String species;
 
-    public Monster(String elder, int mHp, int h, int d, int rW, int rL, String s){
+    public Monster( int mHp, int h, int d, int rW, int rL, double[] resist,String s, ImageIcon bussin){
+        one = bussin;
         species = s;
         maxHp = mHp;
         hp = h;
         damage = d;
         rect = new Rectangle(rW,rL);
-        int value = (int)(Math.random() * 4)+1;
-        if (value == 1){
-            element = "fire";
-        } else if (value == 2){
-            element = "ice";
-        } else if (value == 3){
-            element = "lightning";
-        } else if (value == 4){
-            element = "earth";
-        }
-        if (elder.equals("elder")){
-            hp = 90;
-            maxHp = 90;
-            damage = 30;
-        }
+        resistences = resist;
 
     }
 
-    public String getElement(){
-        return element;
+    public double[] getResists(){
+        return resistences;
     }
 
     public int getHp(){
@@ -65,10 +54,14 @@ public class Monster {
         return damage;
     }
 
+    public ImageIcon getImage(){
+        return one;
+    }
+
     public String takeDamage(int damaged){
         hp -= damaged;
         if (hp <= 0){
-            return "That "+element+ " " + species + " has died!";
+            return "That creature has died!";
         }
         return "You deal "+damaged+ " damage.";
     }

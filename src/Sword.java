@@ -9,43 +9,18 @@ public class Sword{
     upgrades = "";
   }
 
-  public int dealDamage(String element){
-    int total = 0;
-      if (element.equals("lightning")){
-        total += damage[0] * 2;
-        total += damage[1];
-        total += damage[2];
-        total += damage[3]/2;
-        total += damage[4];
+    public int dealDamage(double[] mults){
+        double total = 0;
+        total += damage[0] * mults[0];
+        total += damage[1] * mults[1];
+        total += damage[2] * mults[2];
+        total += damage[3] * mults[3];
+        total += damage[4] * mults[4];
+
+
+        return (int)total;
 
     }
-    if (element.equals("fire")){
-        total += damage[0];
-        total += damage[1]/2;
-        total += damage[2]*2;
-        total += damage[3];
-        total += damage[4];
-
-    }
-    if (element.equals("ice")){
-        total += damage[0];
-        total += damage[1]*2;
-        total += damage[2]/2;
-        total += damage[3];
-        total += damage[4];
-
-    }
-    if (element.equals("earth")){
-        total += damage[0]/2;
-        total += damage[1];
-        total += damage[2];
-        total += damage[3]*2;
-        total += damage[4];
-
-    }
-    return total;
-    
-  }
   public int[] getDamages(){
     return damage;
   }
